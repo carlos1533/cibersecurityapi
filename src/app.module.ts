@@ -9,7 +9,7 @@ import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/nest', { useNewUrlParser: true }),
+    MongooseModule.forRoot('mongodb+srv://carlos:carlos1533@cluster0-y7wrm.mongodb.net/test?retryWrites=true', { useNewUrlParser: true }),
     ProfileModule,
     SharedModule],
   controllers: [AppController],
