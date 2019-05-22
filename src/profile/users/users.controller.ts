@@ -1,9 +1,10 @@
+import { LoginUserDto } from './DTOs/loginUser.dto';
 import { Controller, Get, Post, Body, UseGuards, HttpException, HttpStatus, Param } from '@nestjs/common';
-import { CreateUserDto } from './Dtos/createUser.dto';
+
 import { UsersService } from './users.service';
-import { AuthGuard } from '@nestjs/passport';
+
 import { LoginResponse } from './DTOs/login-response.dto';
-import { LoginUserDto } from './Dtos/loginUser.dto';
+
 import { IUser } from './interfaces/user.interface';
 
 @Controller('users')

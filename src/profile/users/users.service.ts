@@ -1,11 +1,12 @@
+import { LoginUserDto } from './DTOs/loginUser.dto';
 import { IUser } from './interfaces/user.interface';
 import { Model, PassportLocalModel } from 'mongoose';
 import { Injectable, HttpException, HttpStatus, Inject, forwardRef } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { debug } from 'console';
-import { IUsersService } from './interfaces/iUsers.service';
+
 import { CreateUserDto } from './DTOs/createUser.dto';
-import { LoginUserDto } from './Dtos/loginUser.dto';
+
 import { JwtPayload } from 'src/shared/auth/interfaces/jwt-payload.interface';
 import { LoginResponse } from './DTOs/login-response.dto';
 import { genSalt, hash, compare } from 'bcrypt';
