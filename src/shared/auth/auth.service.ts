@@ -1,6 +1,5 @@
 
 import { Injectable, UnauthorizedException, Inject, forwardRef } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { SignOptions, sign } from 'jsonwebtoken';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { UsersService } from 'src/profile/users/users.service';
