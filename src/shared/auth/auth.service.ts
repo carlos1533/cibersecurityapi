@@ -26,7 +26,7 @@ export class AuthService {
 
   async validatePayload(payload: JwtPayload): Promise<IUser> {
     return this.usersService.findOne({
-      email: payload.email.toLocaleLowerCase()
+      name: payload.name.toLocaleLowerCase()
     });
   }
   /*

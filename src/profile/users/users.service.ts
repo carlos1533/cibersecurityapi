@@ -10,6 +10,10 @@ import { JwtPayload } from 'src/shared/auth/interfaces/jwt-payload.interface';
 import { LoginResponse } from './DTOs/login-response.dto';
 import { genSalt, hash, compare } from 'bcrypt';
 import { AuthService } from 'src/shared/auth/auth.service';
+var passwordValidator = require('password-validator');
+
+// Create a schema
+var schema = new passwordValidator();
 @Injectable()
 export class UsersService {
   constructor(@InjectModel('User')
@@ -18,17 +22,19 @@ export class UsersService {
 
   //login
   async login(loginDTO: LoginUserDto): Promise<LoginResponse> {
-    const { email, password } = loginDTO;
-    const user = await this.findOne({ email });
+    const { name, password } = loginDTO;
+    const user = await this.findOne({ name });
     if (!user) {
       throw new HttpException('Credenciales incorrectas', HttpStatus.BAD_REQUEST);
     }
+    console.log(password)
     const isMatch = await compare(password, user.password);
+    //console.log(isMatch)
     if (!isMatch) {
       throw new HttpException('Credenciales incorrectas, error en constraseña.', HttpStatus.BAD_REQUEST);
     }
     const payload: JwtPayload = {
-      email: user.email
+      name: user.name
     };
 
     const token = await this._authService.signPayload(payload);
@@ -75,6 +81,31 @@ export class UsersService {
       return await createdUser.save();
     }
   */
+  async reto01(loginDTO: LoginUserDto): Promise<string> {
+    schema
+      .is().min(8)                                    // Minimum length 8
+      .is().max(100)                                  // Maximum length 100
+      .has().uppercase()                              // Must have uppercase letters
+      .has().lowercase()                              // Must have lowercase letters
+      .has().digits()                                 // Must have digits
+      //.has().not().spaces()                           // Should not have spaces
+      .is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist these values
+    let message = ""
+    const lista = schema.validate(loginDTO.password, { list: true })
+    for (let char of lista) {
+      if (char == 'min') {
+        message = 'No cumple el tamaño mínimo de 8 caracteres';
+      } else if (char == 'oneOf' || char == 'min') {
+        message = 'No cumple el tamaño mínimo de 8 caracteres y la contraseña es muy simple';
+      } else if (char == 'oneOf' || char == 'min' || char == 'digits') {
+        message = 'No cumple el tamaño mínimo de 8 caracteres , la contraseña es muy simple y no tiene dígitos!"';
+      }
+    }
+
+
+    return message
+
+  }
   async update(ID: number, newValue: IUser): Promise<IUser> {
     const user = await this.userModel.findById(ID).exec();
     /*
@@ -95,9 +126,9 @@ export class UsersService {
       return 'The user could not be deleted';
     }
   }
-  async findOneByEmail(email): Promise<IUser> {
+  async findOneByEmail(name): Promise<IUser> {
 
-    return await this.userModel.findOne({ email: email });
+    return await this.userModel.findOne({ name: name });
 
   }
 }

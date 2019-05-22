@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, HttpException, HttpStatus, Param } from '@nestjs/common';
 import { CreateUserDto } from './Dtos/createUser.dto';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -20,19 +20,20 @@ export class UsersController {
   */
   @Post('/registro')
   async register(@Body() user: IUser): Promise<IUser> {
-    const { email } = user;
+    const { name } = user;
     let exist: IUser;
     try {
       exist = await this
         .usersService
-        .findOne({ email });
+        .findOne({ name });
+      console.log(exist)
     } catch (e) {
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     if (exist) {
       throw new HttpException({
-        message: `El correo ${email} ya esta registrado.`,
-        property: 'email'
+        message: `El usuario ${name} ya esta registrado.`,
+        property: 'name'
       }, HttpStatus.BAD_REQUEST);
     }
     const newUser = await this
@@ -42,13 +43,17 @@ export class UsersController {
   }
   @Post('login')
   async login(@Body() loginDTO: LoginUserDto): Promise<LoginResponse> {
-    const { email, password } = loginDTO;
-    if (!email || !password) {
-      throw new HttpException(`Email y password es requerido.`, HttpStatus.BAD_REQUEST);
+    const { name, password } = loginDTO;
+    if (!name || !password) {
+      throw new HttpException(`Nombre y password es requerido.`, HttpStatus.BAD_REQUEST);
     }
     return this
       .usersService
       .login(loginDTO);
   }
+  @Post('reto01')
 
+  async reto01(@Body() loginDTO: LoginUserDto): Promise<string> {
+    return this.usersService.reto01(loginDTO)
+  }
 }
