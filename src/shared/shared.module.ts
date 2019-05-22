@@ -1,7 +1,7 @@
 import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { Module, Global } from '@nestjs/common';
 import { AuthService } from './auth/auth.service';
-import { UsersModule } from 'src/profile/users/users.module';
+import { UsersModule } from '../profile/users/users.module';
 import { PassportModule } from '@nestjs/passport';
 
 

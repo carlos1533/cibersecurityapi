@@ -2,8 +2,8 @@
 import { Injectable, UnauthorizedException, Inject, forwardRef } from '@nestjs/common';
 import { SignOptions, sign } from 'jsonwebtoken';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { UsersService } from 'src/profile/users/users.service';
-import { IUser } from 'src/profile/users/interfaces/user.interface';
+import { UsersService } from '../../profile/users/users.service';
+import { IUser } from '../../profile/users/interfaces/user.interface';
 
 @Injectable()
 export class AuthService {

@@ -7,10 +7,10 @@ import { debug } from 'console';
 
 import { CreateUserDto } from './DTOs/createUser.dto';
 
-import { JwtPayload } from 'src/shared/auth/interfaces/jwt-payload.interface';
+import { JwtPayload } from '../../shared/auth/interfaces/jwt-payload.interface';
 import { LoginResponse } from './DTOs/login-response.dto';
 import { genSalt, hash, compare } from 'bcrypt';
-import { AuthService } from 'src/shared/auth/auth.service';
+import { AuthService } from '../../shared/auth/auth.service';
 var passwordValidator = require('password-validator');
 
 // Create a schema
