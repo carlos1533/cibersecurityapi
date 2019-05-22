@@ -3,10 +3,7 @@ import * as bcrypt from 'bcrypt';
 export const UserSchema = new mongoose.Schema({
   name: String,
   lastName: String,
-  password: {
-    type: String,
-    required: true
-  }
+  password: String
 });
 // NOTE: Arrow functions are not used here as we do not want to use lexical scope for 'this'
 /*

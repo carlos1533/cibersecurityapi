@@ -25,13 +25,16 @@ export class UsersService {
   async login(loginDTO: LoginUserDto): Promise<LoginResponse> {
     const { name, password } = loginDTO;
     const user = await this.findOne({ name });
+    //console.log('usuario:' + user)
     if (!user) {
       throw new HttpException('Credenciales incorrectas', HttpStatus.BAD_REQUEST);
     }
-    console.log(password)
-    const isMatch = await compare(password, user.password);
+    console.log(loginDTO.password)
+    console.log(user.password)
+
+    //const isMatch = await compare(password, user.password);
     //console.log(isMatch)
-    if (!isMatch) {
+    if (loginDTO.password !== user.password) {
       throw new HttpException('Credenciales incorrectas, error en constraseña.', HttpStatus.BAD_REQUEST);
     }
     const payload: JwtPayload = {
@@ -52,11 +55,11 @@ export class UsersService {
 
 
   async register(createUserDto: CreateUserDto): Promise<IUser> {
-    //const { email, password, name, lastName } = createUserDto;
+    //const { password, name } = createUserDto;
     const newUser = new this.userModel(createUserDto);
 
     const salt = await genSalt(10);
-    newUser.password = await hash(createUserDto.password, salt);
+    //newUser.password = await hash(password, salt);
     try {
       const result = await newUser.save();
       return result.toJSON() as IUser;
