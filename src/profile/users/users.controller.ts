@@ -42,7 +42,7 @@ export class UsersController {
       .register(user);
     return newUser
   }
-  @Post('login')
+  @Post('/login')
   async login(@Body() loginDTO: LoginUserDto): Promise<LoginResponse> {
     const { name, password } = loginDTO;
     if (!name || !password) {
