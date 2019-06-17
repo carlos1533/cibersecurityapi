@@ -1,9 +1,9 @@
 import * as mongoose from 'mongoose';
-import * as bcrypt from 'bcrypt';
 export const UserSchema = new mongoose.Schema({
   name: String,
   lastName: String,
-  password: String
+  password: String,
+  pokemon: String
 });
 // NOTE: Arrow functions are not used here as we do not want to use lexical scope for 'this'
 /*
