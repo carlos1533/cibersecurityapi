@@ -10,7 +10,7 @@ const mongoUrlC = 'mongodb+srv://carlos:carlos1533@cluster0-y7wrm.mongodb.net/te
 //, { useNewUrlParser: true }
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost'),
+    MongooseModule.forRoot(mongoUrlC, { useNewUrlParser: true }),
     ProfileModule,
     SharedModule],
   controllers: [AppController],

@@ -3,6 +3,9 @@ export const UserSchema = new mongoose.Schema({
   name: String,
   lastName: String,
   password: String,
+  validez: {
+
+  },
   pokemon: String
 });
 // NOTE: Arrow functions are not used here as we do not want to use lexical scope for 'this'
