@@ -53,7 +53,7 @@ export class UsersController {
       .usersService
       .login(loginDTO);
   }
-  @Post('reto01')
+  @Post('/reto01')
 
   async reto01(@Body() loginDTO: LoginUserDto): Promise<string> {
     return this.usersService.reto01(loginDTO)
