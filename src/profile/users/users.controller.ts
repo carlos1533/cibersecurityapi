@@ -6,6 +6,7 @@ import { UsersService } from './users.service';
 import { LoginResponse } from './DTOs/login-response.dto';
 
 import { IUser } from './interfaces/user.interface';
+import { questionsDTO } from './DTOs/questions.dto';
 
 @Controller('users')
 export class UsersController {
@@ -56,5 +57,9 @@ export class UsersController {
 
   async reto01(@Body() loginDTO: LoginUserDto): Promise<string> {
     return this.usersService.reto01(loginDTO)
+  }
+  @Get('/questions')
+  async getQuestions(@Body() questionsDTO:questionsDTO):Promise<any>{
+    return this.usersService.getQuestions();
   }
 }

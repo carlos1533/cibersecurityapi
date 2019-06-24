@@ -1,5 +1,6 @@
 import { LoginUserDto } from './DTOs/loginUser.dto';
 import { IUser } from './interfaces/user.interface';
+import { IQuestions } from './interfaces/questions.interface';
 import { Model, PassportLocalModel } from 'mongoose';
 import { Injectable, HttpException, HttpStatus, Inject, forwardRef } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -15,9 +16,11 @@ var passwordValidator = require('password-validator');
 
 // Create a schema
 var schema = new passwordValidator();
+
 @Injectable()
 export class UsersService {
   constructor(@InjectModel('User')
+  //private questionModel:Model<IQuestions>,
   private userModel: Model<IUser>,
     @Inject(forwardRef(() => AuthService)) readonly _authService: AuthService, ) { }
 
@@ -86,6 +89,32 @@ export class UsersService {
     }
   */
   async reto01(loginDTO: LoginUserDto): Promise<string> {
+    const pass_length = loginDTO.password.length;
+    let contains_number=false;
+    let contains_uppercase=false;
+    let contains_special_character=false;
+    let valid_password=false;
+    let messageP = ""
+      const format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+
+      if (pass_length < 8) {
+        messageP = 'No cumple el tamaño mínimo de 8 caracteres';
+      }
+      contains_number = /\d/.test(loginDTO.password);
+      contains_uppercase = /[A-Z]/.test(loginDTO.password);
+      contains_special_character = format.test(loginDTO.password);
+
+      if (contains_number === false) {
+        messageP = 'No tiene numeros';
+      } else if ( /\d/.test(loginDTO.password)=== true && pass_length < 8){
+        messageP = 'No cumple el tamaño mínimo de 8 caracteres';
+      } else if (/\d/.test(loginDTO.password)=== true && pass_length > 8 &&
+       /[A-Z]/.test(loginDTO.password)===false
+      ){
+
+    
+      }
+      
     schema
       .is().min(8)                                    // Minimum length 8
       .is().max(100)                                  // Maximum length 100
@@ -93,9 +122,11 @@ export class UsersService {
       .has().lowercase()                              // Must have lowercase letters
       .has().digits()                                 // Must have digits
       //.has().not().spaces()                           // Should not have spaces
-      .is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist these values
+      .is().not().oneOf(['Passw0rd', 'Password123'])// Blacklist these values
+      .simbols()
     let message = ""
     const lista = schema.validate(loginDTO.password, { list: true })
+    console.log(lista)
     for (let char of lista) {
       if (char == 'min') {
         message = 'No cumple el tamaño mínimo de 8 caracteres';
@@ -103,6 +134,9 @@ export class UsersService {
         message = 'No cumple el tamaño mínimo de 8 caracteres y la contraseña es muy simple';
       } else if (char == 'oneOf' || char == 'min' || char == 'digits') {
         message = 'No cumple el tamaño mínimo de 8 caracteres , la contraseña es muy simple y no tiene dígitos!"';
+      }
+      else{
+        message ='Valida!'
       }
     }
 
@@ -134,5 +168,50 @@ export class UsersService {
 
     return await this.userModel.findOne({ name: name });
 
+  }
+
+
+
+  //quiz para el nivel 01
+
+async getQuestions():Promise<any>{
+    let questions = {
+      title: "Quiz about Foo",
+      questions: [
+      {
+      text: "Is true true?",
+      type: "tf",
+      answer: "t"
+      },
+      {
+      text: "Is false true?",
+      type: "tf",
+      answer: "f"
+      },
+      {
+      text: "What is the best beer?",
+      type: "mc",
+      answers: [
+      "Coors",
+      "Miller",
+      "Bud",
+      "Anchor Steam"
+      ],
+      answer: "Anchor Steam"
+      },
+      {
+      text: "What is the best cookie?",
+      type: "mc",
+      answers: [
+      "Chocolate Chip",
+      "Sugar",
+      "Beer"
+      ],
+      answer: "Sugar"
+      }
+      ]
+      }
+    
+    return questions;
   }
 }
