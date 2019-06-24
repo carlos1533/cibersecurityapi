@@ -108,9 +108,6 @@ export class UsersService {
     } else if (char == 'oneOf' || char == 'min' || char == 'digits') {
       message = 'No cumple el tamaño mínimo de 8 caracteres , la contraseña es muy simple y no tiene dígitos!"';
     }
-    else{
-      message ='Valida!'
-    }
   }
 
 
