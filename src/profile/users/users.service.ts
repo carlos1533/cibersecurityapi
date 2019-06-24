@@ -89,6 +89,34 @@ export class UsersService {
     }
   */
   async reto01(loginDTO: LoginUserDto): Promise<string> {
+    schema
+    .is().min(8)                                    // Minimum length 8
+    .is().max(100)                                  // Maximum length 100
+    .has().uppercase()                              // Must have uppercase letters
+    .has().lowercase()                              // Must have lowercase letters
+    .has().digits()                                 // Must have digits
+    //.has().not().spaces()                           // Should not have spaces
+    .is().not().oneOf(['Passw0rd', 'Password123']);// Blacklist these values
+  let message = ""
+  const lista = schema.validate(loginDTO.password, { list: true })
+  console.log(lista)
+  for (let char of lista) {
+    if (char == 'min') {
+      message = 'No cumple el tamaño mínimo de 8 caracteres';
+    } else if (char == 'oneOf' || char == 'min') {
+      message = 'No cumple el tamaño mínimo de 8 caracteres y la contraseña es muy simple';
+    } else if (char == 'oneOf' || char == 'min' || char == 'digits') {
+      message = 'No cumple el tamaño mínimo de 8 caracteres , la contraseña es muy simple y no tiene dígitos!"';
+    }
+    else{
+      message ='Valida!'
+    }
+  }
+
+
+  return message
+
+    /*
     const pass_length = loginDTO.password.length;
     let contains_number=false;
     let contains_uppercase=false;
@@ -114,35 +142,8 @@ export class UsersService {
 
     
       }
-      
-    schema
-      .is().min(8)                                    // Minimum length 8
-      .is().max(100)                                  // Maximum length 100
-      .has().uppercase()                              // Must have uppercase letters
-      .has().lowercase()                              // Must have lowercase letters
-      .has().digits()                                 // Must have digits
-      //.has().not().spaces()                           // Should not have spaces
-      .is().not().oneOf(['Passw0rd', 'Password123'])// Blacklist these values
-      .simbols()
-    let message = ""
-    const lista = schema.validate(loginDTO.password, { list: true })
-    console.log(lista)
-    for (let char of lista) {
-      if (char == 'min') {
-        message = 'No cumple el tamaño mínimo de 8 caracteres';
-      } else if (char == 'oneOf' || char == 'min') {
-        message = 'No cumple el tamaño mínimo de 8 caracteres y la contraseña es muy simple';
-      } else if (char == 'oneOf' || char == 'min' || char == 'digits') {
-        message = 'No cumple el tamaño mínimo de 8 caracteres , la contraseña es muy simple y no tiene dígitos!"';
-      }
-      else{
-        message ='Valida!'
-      }
-    }
-
-
-    return message
-
+*/
+   
   }
   async update(ID: number, newValue: IUser): Promise<IUser> {
     const user = await this.userModel.findById(ID).exec();
