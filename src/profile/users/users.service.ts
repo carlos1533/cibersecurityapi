@@ -92,26 +92,46 @@ export class UsersService {
     schema
     .is().min(8)                                    // Minimum length 8
     .is().max(100)                                  // Maximum length 100
-    .has().uppercase()                              // Must have uppercase letters
-    .has().lowercase()                              // Must have lowercase letters
+    .has().uppercase()
+    .has().letters()
+    .has().symbols()                              // Must have uppercase letters                            // Must have lowercase letters
     .has().digits()                                 // Must have digits
-    //.has().not().spaces()                           // Should not have spaces
+    .has().not().spaces()                           // Should not have spaces
     .is().not().oneOf(['Passw0rd', 'Password123']);// Blacklist these values
   let message = ""
+  let message2 = ""
+  let message3 = ""
+  let message4 = ""
+  let message5 = ""
   const lista = schema.validate(loginDTO.password, { list: true })
-  console.log(lista)
+  //console.log(lista)
+  
   for (let char of lista) {
     if (char == 'min') {
-      message = 'No cumple el tamaño mínimo de 8 caracteres';
-    } else if (char == 'oneOf' || char == 'min') {
-      message = 'No cumple el tamaño mínimo de 8 caracteres y la contraseña es muy simple';
-    } else if (char == 'oneOf' || char == 'min' || char == 'digits') {
-      message = 'No cumple el tamaño mínimo de 8 caracteres , la contraseña es muy simple y no tiene dígitos!"';
+      message=', No cumple el tamaño mínimo de 8 caracteres';
+    } 
+    if (char == 'uppercase' ){
+      message2= ', No tiene mayusculas';  
+    } 
+    if (char == 'oneOf') {
+      message3 = ', La contraseña es muy simple';
+    }  
+    if (char == 'digits') {
+      message4 = ', No tiene simbolos"';
+    } 
+    if (char == 'letters') {
+
+      message5 = ', No tiene letras';
     }
+     
+    }
+    return message+message2 +message3+message4+message5  
   }
+    
+  
 
 
-  return message
+
 
     /*
     const pass_length = loginDTO.password.length;
@@ -141,7 +161,7 @@ export class UsersService {
       }
 */
    
-  }
+  
   async update(ID: number, newValue: IUser): Promise<IUser> {
     const user = await this.userModel.findById(ID).exec();
     /*
