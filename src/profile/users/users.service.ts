@@ -98,34 +98,41 @@ export class UsersService {
     .has().digits()                                 // Must have digits
     .has().not().spaces()                           // Should not have spaces
     .is().not().oneOf(['Passw0rd', 'Password123']);// Blacklist these values
+
+    
   let message = ""
   let message2 = ""
   let message3 = ""
   let message4 = ""
   let message5 = ""
+  let message6 = ""
   const lista = schema.validate(loginDTO.password, { list: true })
   //console.log(lista)
   
   for (let char of lista) {
     if (char == 'min') {
-      message=', No cumple el tamaño mínimo de 8 caracteres';
+      message=', Tu contraseña es muy debil. Tu contraseña deberia tener mínimo 8 caracteres para que sea segura, ingresa una contraseña con 8 o más caracteres.';
     } 
     if (char == 'uppercase' ){
-      message2= ', No tiene mayusculas';  
+      message2= ',Muy bien, tu contraseña tiene 8 caracteres entre letras y numeros, pero para que sea más segura deberias usar Mayusculzas y minusculas, ingresa una contraseña de la misma longitud con letras y números y con mayuzculas.';  
     } 
     if (char == 'oneOf') {
       message3 = ', La contraseña es muy simple';
     }  
     if (char == 'digits') {
-      message4 = ', No tiene simbolos"';
+      message4 = ',Muy bien, tu contraseña tiene 8 caracteres entre letras y numeros y mayusculas, pero para que sea más segura deberia tener caracteres especiales ($#"$), ingresa una contraseña de la misma longitud con letras, números, con mayusculas y caracteres raros."';
     } 
     if (char == 'letters') {
 
-      message5 = ', No tiene letras';
+      message5 = ',Muy bien, tu contraseña tiene 8 caracteres, pero para que sea más segura deberia usar letras y números, ingresa una contraseña de la misma longitud con letras y números.';
+    }
+    if(char=''){
+      message5="Muy bien, tu contraseña es segura."
+
     }
      
     }
-    return message+message2 +message3+message4+message5  
+    return message+message2 +message3+message4+message5+ message6  
   }
     
   
