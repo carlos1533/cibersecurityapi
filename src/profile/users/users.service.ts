@@ -101,38 +101,34 @@ export class UsersService {
 
     
   let message = ""
-  let message2 = ""
-  let message3 = ""
-  let message4 = ""
-  let message5 = ""
-  let message6 = ""
   const lista = schema.validate(loginDTO.password, { list: true })
-  //console.log(lista)
-  
+  console.log(lista.length)
   for (let char of lista) {
     if (char == 'min') {
-      message=', Tu contraseña es muy debil. Tu contraseña deberia tener mínimo 8 caracteres para que sea segura, ingresa una contraseña con 8 o más caracteres.';
+      message='Tu contraseña es muy debil. Tu contraseña deberia tener mínimo 8 caracteres para que sea segura, ingresa una contraseña con 8 o más caracteres.';
+      return message
     } 
     if (char == 'uppercase' ){
-      message2= ',Muy bien, tu contraseña tiene 8 caracteres entre letras y numeros, pero para que sea más segura deberias usar Mayusculzas y minusculas, ingresa una contraseña de la misma longitud con letras y números y con mayuzculas.';  
+      message= 'Muy bien, tu contraseña tiene 8 caracteres entre letras y numeros, pero para que sea más segura deberias usar mayusculas y minusculas, ingresa una contraseña de la misma longitud con letras y números y con mayusculas.';  
+      return message
     } 
     if (char == 'oneOf') {
-      message3 = ', La contraseña es muy simple';
+      message = 'La contraseña es muy simple';
     }  
-    if (char == 'digits') {
-      message4 = ',Muy bien, tu contraseña tiene 8 caracteres entre letras y numeros y mayusculas, pero para que sea más segura deberia tener caracteres especiales ($#"$), ingresa una contraseña de la misma longitud con letras, números, con mayusculas y caracteres raros."';
+    if (char == 'symbols') {
+      message = 'Muy bien, tu contraseña tiene 8 caracteres entre letras y numeros y mayusculas, pero para que sea más segura deberia tener caracteres especiales ($#"$), ingresa una contraseña de la misma longitud con letras, números, con mayusculas y caracteres raros."';
+      return message
     } 
     if (char == 'letters') {
 
-      message5 = ',Muy bien, tu contraseña tiene 8 caracteres, pero para que sea más segura deberia usar letras y números, ingresa una contraseña de la misma longitud con letras y números.';
+      message = 'Muy bien, tu contraseña tiene 8 caracteres, pero para que sea más segura deberia usar letras y números, ingresa una contraseña de la misma longitud con letras y números.';
+      return message
     }
-    if(char=''){
-      message5="Muy bien, tu contraseña es segura."
-
     }
-     
+    if(lista.length==0){
+      message="Muy bien, tu contraseña es segura."
+      return message
     }
-    return message+message2 +message3+message4+message5+ message6  
   }
     
   
